@@ -1,0 +1,13 @@
+.fontStyle{
+  font-family: Arial, Helvetica, sans-serif;
+}
+.txtShadow{
+  text-shadow: 0 10px 8px rgba(204, 0, 255, 0.400);
+}
+.noBar{
+  scrollbar-width: none;
+}
+
+.no-scrollbar{
+  scrollbar-width: none;
+}
