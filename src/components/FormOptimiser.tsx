@@ -1,5 +1,5 @@
-import { useCallback, useMemo, useState } from "react"
-import { Controller, useForm, Watch } from "react-hook-form";
+import { useCallback, useMemo } from "react"
+import { Controller, useForm } from "react-hook-form";
 import { cpus, gpus, rams, ssds } from "../services/json/formData";
 
 
