@@ -10,3 +10,8 @@ export interface UserData  {
 export interface ErrorData {
     error?: string;
 }
+
+export interface Product {
+        item: string;
+        price: number
+    } 

@@ -9,7 +9,7 @@ function TodoList() {
     completed: false
   });
 
-  const [errors, setErrors] = useState<ErrorData>({})
+  const [errors, setErrors] = useState<ErrorData>({});
   
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {

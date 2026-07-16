@@ -1,6 +1,7 @@
 import './App.css'
+import FormOptimiser from './components/FormOptimiser'
 import Timer from './components/StopWatch'
-import TodoList from './components/TodoList'
+// import TodoList from './components/TodoList'
 
 function App() {
   
@@ -8,7 +9,8 @@ function App() {
   return (
    <>
    <Timer/>
-   <TodoList/>
+   <FormOptimiser/>
+   {/* <TodoList/> */}
    </>
   )
 }

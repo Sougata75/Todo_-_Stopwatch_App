@@ -1,49 +1,33 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { LapData } from "../typescript/interface/interface";
 import { bestLaps } from "../services/json/lapData";
 
 function stopmWatch() {
   const [laps, setLaps] = useState<LapData[]>(bestLaps);
 
-  const [minute, setMinute] = useState(0);
-  const [second, setSecond] = useState(0);
-  const [miliSecond, setMiliSecond] = useState(0);
+  const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [intervalId, setIntervalID] = useState<any>(null);
+
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const myWatch = () => {
     if (isRunning) {
-      clearInterval(intervalId);
+      if(timerRef.current) clearInterval(timerRef.current);
       setIsRunning(false);
-      return;
+    } else {
+      setIsRunning(true);
+      timerRef.current = setInterval(() => {
+        setTime((prev) => prev + 1);
+      },1000);
     }
+    };
 
-    setIsRunning(true);
-    const id = setInterval(() => {
-      setMiliSecond((ms) => {
-        if (ms >= 99) {
-          setSecond((s) => {
-            if (s >= 59) {
-              setMinute((m) => m + 1);
-              return 0;
-            }
-            return s + 1;
-          });
-          return 0;
-        }
-        return ms + 1;
-      });
-    }, 10);
-
-    setIntervalID(id);
-  };
-
-  const displayMinute = minute.toString().padStart(2, "0");
-  const displaySecond = second.toString().padStart(2, "0");
-  const displayMiliSecond = miliSecond.toString().padStart(2, "0");
+  const displayHour = Math.floor(time / 3600).toString().padStart(2,"0");
+  const displayMinute = Math.floor((time % 3600)/60).toString().padStart(2,"0");
+  const displaySecond = (time % 60).toString().padStart(2,"0");
 
   const handleLapData = () => {
-    const currentLapTime = `${displayMinute}:${displaySecond}:${displayMiliSecond}`;
+    const currentLapTime = `${displayHour}:${displayMinute}:${displaySecond}`;
     const newLaps: LapData = {
       time: currentLapTime,
     };
@@ -53,11 +37,9 @@ function stopmWatch() {
   };
 
   const handleReset = () => {
-    clearInterval(intervalId);
+    if(timerRef.current) clearInterval(timerRef.current);
     setIsRunning(false);
-    setMinute(0);
-    setSecond(0);
-    setMiliSecond(0);
+    setTime(0);
 
     setLaps([]);
     sessionStorage.setItem("bestLaps", JSON.stringify([]));
@@ -69,7 +51,7 @@ function stopmWatch() {
         <div className="w-[400px] h-[600px] bg-gray-100 rounded-2xl shadow-xl shadow-purple-900 p-3">
           <div className="w-full h-[30%] flex justify-center items-center">
             <p className={` ${isRunning? "text-purple-600":"text-gray-600"} fontStyle txtShadow font-bold text-[60px]`}>
-              {displayMinute}:{displaySecond}:{displayMiliSecond}
+              {displayHour}:{displayMinute}:{displaySecond}
             </p>
           </div>
           <div className=" w-full h-[40%] mb-[45px] overflow-y-scroll noBar">
